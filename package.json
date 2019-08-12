@@ -1,0 +1,24 @@
+{
+  "name": "screeps",
+  "version": "1.0.0",
+  "description": "My Screeps Bot",
+  "main": "main.js",
+  "dependencies": {
+    "@types/lodash": "^4.14.136",
+    "@types/screeps": "^2.5.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/naabers/screeps.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/naabers/screeps/issues"
+  },
+  "homepage": "https://github.com/naabers/screeps#readme"
+}

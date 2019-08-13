@@ -5,7 +5,9 @@
   "main": "main.js",
   "dependencies": {
     "@types/lodash": "^4.14.136",
-    "@types/screeps": "^2.5.4"
+    "@types/screeps": "^2.5.4",
+    "gulp": "^4.0.2",
+    "gulp-screeps": "^1.0.8"
   },
   "devDependencies": {},
   "scripts": {

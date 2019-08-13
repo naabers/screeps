@@ -10,33 +10,33 @@ module.exports = {
     jobs = {};
 
     for (var roomName in Game.rooms) {
+      jobs[roomName] = [];
       room = Game.rooms[roomName];
       // Make sure each room gets upgraded as a top priority if it doesnt have one
       var roomUpgraderCount = _.filter(Game.creeps, creep => creep.memory.role == "upgrade" && creep.room.name == room)
         .length;
       if (roomUpgraderCount == 0) {
-        jobs[roomName].unshift({ taskType: "upgrade", taskTarget: room.controller });
+        jobs[roomName].unshift({ taskType: "upgrade", taskTargetId: room.controller.id });
       }
 
       // Repair what we can
       repairTargets = util.getRepairTargets(room);
       for (var repairTarget in repairTargets) {
         if (
-          _.filter(Game.creeps, creep => creep.memory.role == "repair" && creep.taskTarget == repairTarget).length == 0
+          _.filter(Game.creeps, creep => creep.memory.role == "repair" && creep.taskTargetId == repairTarget.id)
+            .length == 0
         ) {
-          jobs[roomName].unshift({ taskType: "repair", taskTarget: repairTarget });
+          jobs[roomName].unshift({ taskType: "repair", taskTargetId: repairTarget.id });
         }
       }
 
       // Construct new things
       for (var constructionSiteId in Game.constructionSites) {
         if (
-          _.filter(
-            Game.creeps,
-            creep => creep.memory.role == "build" && creep.taskTarget == Game.constructionSites[constructionSiteId]
-          ).length == 0
+          _.filter(Game.creeps, creep => creep.memory.role == "build" && creep.taskTargetId == constructionSiteId)
+            .length == 0
         ) {
-          jobs[roomName].unshift({ taskType: "build", taskTarget: Game.constructionSites[constructionSiteId] });
+          jobs[roomName].unshift({ taskType: "build", taskTargetId: constructionSiteId });
         }
       }
 
@@ -44,10 +44,10 @@ module.exports = {
       harvestTargets = util.getHarvestTargets(room);
       for (var harvestTarget in harvestTargets) {
         if (
-          _.filter(Game.creeps, creep => creep.memory.role == "harvest" && creep.taskTarget == harvestTarget).length ==
-          0
+          _.filter(Game.creeps, creep => creep.memory.role == "harvest" && creep.taskTargetId == harvestTarget.id)
+            .length == 0
         ) {
-          jobs[roomName].unshift({ taskType: "harvest", taskTarget: harvestTarget });
+          jobs[roomName].unshift({ taskType: "harvest", taskTargetId: harvestTarget.id });
         }
       }
     }
@@ -57,20 +57,20 @@ module.exports = {
     if (jobs[creep.room.name].length) {
       job = jobs[creep.room.name].pop();
       creep.memory.taskType = job.taskType;
-      creep.memory.taskTarget = job.taskTarget;
+      creep.memory.taskTargetId = job.taskTargetId;
     } else {
       creep.memory.taskType = "upgrade";
-      creep.memory.taskTarget = creep.room.conroller;
+      creep.memory.taskTargetId = creep.room.conroller.id;
     }
   },
 
   clearJob: function(creep) {
-    creep.memory.taskComplete = false;
-    creep.memory.taskType = undefined;
-    creep.memory.taskTarget = undefined;
+    role = creep.memory.role;
+    delete Memory.creeps[creep.name];
+    creep.memory.role = role;
   },
 
   runJob: function(creep) {
-    roleWorker.run();
+    roleWorker.run(creep);
   }
 };

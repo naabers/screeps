@@ -1,6 +1,7 @@
 var util = require("util");
 
 function getEnergy(creep) {
+  creep.say("⛏️");
   if (creep.carry.energy < creep.carryCapacity) {
     var sources = creep.room.find(FIND_SOURCES);
     if (creep.harvest(util.setEnergySource(creep)) == ERR_NOT_IN_RANGE) {
@@ -10,19 +11,23 @@ function getEnergy(creep) {
 }
 
 function harvest(creep) {
+  creep.say("🔋");
   getEnergy(creep);
-  result = creep.transfer(creep.memory.taskTarget, RESOURCE_ENERGY);
+  target = Game.getObjectById(creep.memory.taskTargetId);
+  result = creep.transfer(target, RESOURCE_ENERGY);
   if (result == ERR_NOT_IN_RANGE) {
-    creep.moveTo(creep.memory.taskTarget, { visualizePathStyle: { stroke: "#ffffff" } });
+    creep.moveTo(target, { visualizePathStyle: { stroke: "#ffffff" } });
   } else {
     creep.memory.taskComplete = true;
   }
 }
 
 function upgrade(creep) {
+  creep.say("⏫");
   if (creep.memory.spendEnergy) {
-    if (creep.upgradeController(creep.memory.taskTarget) == ERR_NOT_IN_RANGE) {
-      creep.moveTo(creep.memory.taskTarget);
+    target = Game.getObjectById(creep.memory.taskTargetId);
+    if (creep.upgradeController(target) == ERR_NOT_IN_RANGE) {
+      creep.moveTo(target);
     }
     if (creep.carry.energy == 0) {
       creep.memory.taskComplete = true;
@@ -37,11 +42,13 @@ function upgrade(creep) {
 }
 
 function build(creep) {
+  creep.say("🚧");
+  target = Game.getObjectById(creep.memory.taskTargetId);
   if (creep.memory.spendEnergy) {
-    if (creep.build(creep.memory.taskTarget) == ERR_NOT_IN_RANGE) {
-      creep.moveTo(creep.memory.taskTarget);
+    if (creep.build(target) == ERR_NOT_IN_RANGE) {
+      creep.moveTo(target);
     }
-    if (creep.carry.energy == 0 || creep.memory.taskTarget.progress == creep.memory.taskTarget.progressTotal) {
+    if (creep.carry.energy == 0 || target.progress == target.progressTotal) {
       creep.memory.taskComplete = true;
     }
   } else {
@@ -54,11 +61,13 @@ function build(creep) {
 }
 
 function repair(creep) {
+  creep.say("🛠️");
+  target = Game.getObjectById(creep.memory.taskTargetId);
   if (creep.memory.spendEnergy) {
-    if (creep.repair(creep.memory.taskTarget) == ERR_NOT_IN_RANGE) {
-      creep.moveTo(creep.memory.taskTarget);
+    if (creep.repair(target) == ERR_NOT_IN_RANGE) {
+      creep.moveTo(target);
     }
-    if (creep.carry.energy == 0 || creep.memory.taskTarget.hits == creep.memory.taskTarget.maxHits) {
+    if (creep.carry.energy == 0 || target.hits == target.maxHits) {
       creep.memory.taskComplete = true;
     }
   } else {

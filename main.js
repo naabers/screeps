@@ -13,7 +13,7 @@ module.exports.loop = function() {
   celery.createJobQueue();
 
   for (var name in Game.creeps) {
-    creep = creeps[name];
+    creep = Game.creeps[name];
     if (creep.memory.taskComplete) {
       celery.clearJob(creep);
       celery.assignJob(creep);

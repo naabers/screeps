@@ -6,7 +6,7 @@ function spawnCreep() {
   workerCount = Object.keys(Game.creeps).length;
   if (workerCount < 10) {
     Game.spawns["home"].spawnCreep([WORK, CARRY, MOVE], "Worker" + getRandomInt(), {
-      memory: { role: "worker" }
+      memory: { role: "worker", taskComplete: true }
     });
   }
 }

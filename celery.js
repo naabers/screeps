@@ -13,8 +13,10 @@ module.exports = {
       jobs[roomName] = [];
       room = Game.rooms[roomName];
       // Make sure each room gets upgraded as a top priority if it doesnt have one
-      var roomUpgraderCount = _.filter(Game.creeps, creep => creep.memory.role == "upgrade" && creep.room.name == room)
-        .length;
+      var roomUpgraderCount = _.filter(
+        Game.creeps,
+        creep => creep.memory.taskType == "upgrade" && creep.room.name == roomName
+      ).length;
       if (roomUpgraderCount == 0) {
         jobs[roomName].unshift({ taskType: "upgrade", taskTargetId: room.controller.id });
       }

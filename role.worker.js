@@ -48,7 +48,7 @@ function build(creep) {
     if (creep.build(target) == ERR_NOT_IN_RANGE) {
       creep.moveTo(target);
     }
-    if (creep.carry.energy == 0 || target.progress == target.progressTotal) {
+    if (creep.carry.energy == 0 || target == null) {
       creep.memory.taskComplete = true;
     }
   } else {

@@ -36,7 +36,7 @@ function spawnConstructionSite(constructionSites) {
 }
 
 function createRoadsBetween(room, apos, bpos) {
-  paths = PathFinder.search(apos, bpos).path;
+  paths = PathFinder.search(apos, bpos, { swampCost: 1 }).path;
   for (path in paths) {
     room.createConstructionSite(paths[path].x, paths[path].y, STRUCTURE_ROAD);
   }

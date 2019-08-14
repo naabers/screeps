@@ -15,6 +15,9 @@ function spawnExtensions(spawn) {
   var yOffset = -4;
   while (yOffset <= 4) {
     var xOffset = -4;
+    if (yOffset % 2) {
+      xOffset = -3;
+    }
     while (xOffset <= 4) {
       var newX = spawn.pos.x + xOffset;
       var newY = spawn.pos.y + yOffset;
@@ -24,7 +27,7 @@ function spawnExtensions(spawn) {
       }
       xOffset += 2;
     }
-    yOffset += 2;
+    yOffset += 1;
   }
 }
 

@@ -23,7 +23,8 @@ module.exports = {
 
       // Repair what we can
       repairTargets = util.getRepairTargets(room);
-      for (var repairTarget in repairTargets) {
+      for (var repairTargetIndex in repairTargets) {
+        repairTarget = repairTargets[repairTargetIndex];
         if (
           _.filter(Game.creeps, creep => creep.memory.role == "repair" && creep.taskTargetId == repairTarget.id)
             .length == 0

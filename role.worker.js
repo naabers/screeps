@@ -77,7 +77,7 @@ function repair(creep) {
     if (creep.repair(target) == ERR_NOT_IN_RANGE) {
       creep.moveTo(target);
     }
-    if (creep.carry.energy == 0 || target.hits == target.maxHits) {
+    if (creep.carry.energy == 0 || target.hits == target.hitsMax) {
       creep.memory.taskComplete = true;
     }
   } else {

@@ -12,13 +12,20 @@ function getEnergy(creep) {
 
 function harvest(creep) {
   creep.say("🔋");
-  getEnergy(creep);
-  target = Game.getObjectById(creep.memory.taskTargetId);
-  result = creep.transfer(target, RESOURCE_ENERGY);
-  if (result == ERR_NOT_IN_RANGE) {
-    creep.moveTo(target, { visualizePathStyle: { stroke: "#ffffff" } });
+  if (creep.memory.spendEnergy) {
+    target = Game.getObjectById(creep.memory.taskTargetId);
+    result = creep.transfer(target, RESOURCE_ENERGY);
+    if (result == ERR_NOT_IN_RANGE) {
+      creep.moveTo(target, { visualizePathStyle: { stroke: "#ffffff" } });
+    } else {
+      creep.memory.taskComplete = true;
+    }
   } else {
-    creep.memory.taskComplete = true;
+    if (creep.carry.energy < creep.carryCapacity) {
+      getEnergy(creep);
+    } else {
+      creep.memory.spendEnergy = true;
+    }
   }
 }
 

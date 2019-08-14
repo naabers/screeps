@@ -44,11 +44,13 @@ module.exports = {
 
       // Harvest
       harvestTargets = util.getHarvestTargets(room);
-      for (var harvestTarget in harvestTargets) {
+      for (var harvestTargetIndex in harvestTargets) {
+        harvestTarget = harvestTargets[harvestTargetIndex];
         if (
           _.filter(Game.creeps, creep => creep.memory.role == "harvest" && creep.taskTargetId == harvestTarget.id)
             .length == 0
         ) {
+          console.log(harvestTarget);
           jobs[roomName].unshift({ taskType: "harvest", taskTargetId: harvestTarget.id });
         }
       }

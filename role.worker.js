@@ -2,10 +2,13 @@ var util = require("util");
 
 function getEnergy(creep) {
   creep.say("⛏️");
+  if (creep.memory.sourceId == undefined) {
+    util.setEnergySource(creep);
+  }
+  source = Game.getObjectById(creep.memory.sourceId);
   if (creep.carry.energy < creep.carryCapacity) {
-    var sources = creep.room.find(FIND_SOURCES);
-    if (creep.harvest(util.setEnergySource(creep)) == ERR_NOT_IN_RANGE) {
-      creep.moveTo(util.setEnergySource(creep), { visualizePathStyle: { stroke: "#ffaa00" } });
+    if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
+      creep.moveTo(source, { visualizePathStyle: { stroke: "#ffaa00" } });
     }
   }
 }

@@ -5,8 +5,8 @@ module.exports = {
     // TODO if source is out of energy do we switch?
     var sources = creep.room.find(FIND_SOURCES_ACTIVE);
 
-    if (creep.memory.source != undefined) {
-      return sources[creep.memory.source];
+    if (creep.memory.sourceId != undefined) {
+      return;
     }
 
     if (sources.length - 1 > lastSource) {
@@ -14,8 +14,7 @@ module.exports = {
     } else {
       lastSource = 0;
     }
-    creep.memory.source = lastSource;
-    return sources[lastSource];
+    creep.memory.sourceId = sources[lastSource].id;
   },
 
   getHarvestTargets: function(room) {

@@ -19,12 +19,14 @@ module.exports = {
   },
 
   getHarvestTargets: function(room) {
-    room.find(FIND_STRUCTURES, {
+    return room.find(FIND_STRUCTURES, {
       filter: structure => {
-        return (
-          (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN) &&
-          structure.energy < structure.energyCapacity
-        );
+        if (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN) {
+          if (structure.energy < structure.energyCapacity) {
+            return true;
+          }
+        }
+        return false;
       }
     });
   },

@@ -11,24 +11,44 @@ function spawnCreep() {
   }
 }
 
+function spawnExtensions(spawn) {
+  var yOffset = -4;
+  while (yOffset <= 4) {
+    var xOffset = -4;
+    while (xOffset <= 4) {
+      var newX = spawn.pos.x + xOffset;
+      var newY = spawn.pos.y + yOffset;
+      var result = spawn.room.createConstructionSite(newX, newY, STRUCTURE_EXTENSION);
+      if (result == ERR_RCL_NOT_ENOUGH) {
+        return;
+      }
+      xOffset += 2;
+    }
+    yOffset += 2;
+  }
+}
+
 function spawnConstructionSite(constructionSites) {
   for (var roomName in Game.rooms) {
     var room = Game.rooms[roomName];
-    if (room.controller.level == 2 && constructionSites < 5) {
-      var x = Game.spawns["home"].pos.x + 1 + constructionSites;
-      var y = Game.spawns["home"].pos.y + 1 + constructionSites;
-      room.createConstructionSite(x, y, STRUCTURE_EXTENSION);
-    } else if (room.controller.level == 3 && constructionSites < 10) {
-      var x = Game.spawns["home"].pos.x + constructionSites;
-      var y = Game.spawns["home"].pos.y + 1 + constructionSites;
-      room.createConstructionSite(x, y, STRUCTURE_EXTENSION);
+    var spawn = undefined;
+    for (spawnName in Game.spawns) {
+      if (room == Game.spawns[spawnName].room) {
+        spawn = Game.spawns[spawnName];
+      }
     }
 
+    if (spawn == undefined) {
+      return;
+    }
+
+    spawnExtensions(spawn);
+
     if (room.controller.level > 1 && !room.memory.hasRoads) {
-      var sources = Game.spawns["home"].room.find(FIND_SOURCES);
+      var sources = spawn.room.find(FIND_SOURCES);
       for (var source in sources) {
-        createRoadsBetween(room, Game.spawns["home"].room.controller.pos, sources[source].pos);
-        createRoadsBetween(room, Game.spawns["home"].pos, sources[source].pos);
+        createRoadsBetween(room, spawn.room.controller.pos, sources[source].pos);
+        createRoadsBetween(room, spawn.pos, sources[source].pos);
         room.memory.hasRoads = true;
       }
     }

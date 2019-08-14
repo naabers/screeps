@@ -62,7 +62,7 @@ module.exports = {
       creep.memory.taskTargetId = job.taskTargetId;
     } else {
       creep.memory.taskType = "upgrade";
-      creep.memory.taskTargetId = creep.room.conroller.id;
+      creep.memory.taskTargetId = creep.room.controller.id;
     }
   },
 

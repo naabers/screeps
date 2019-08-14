@@ -50,7 +50,6 @@ module.exports = {
           _.filter(Game.creeps, creep => creep.memory.role == "harvest" && creep.taskTargetId == harvestTarget.id)
             .length == 0
         ) {
-          console.log(harvestTarget);
           jobs[roomName].unshift({ taskType: "harvest", taskTargetId: harvestTarget.id });
         }
       }
